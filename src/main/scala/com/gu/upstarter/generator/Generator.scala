@@ -16,9 +16,9 @@ object Generator {
 
     val environmentVariables = application.environmentVariables.getOrElse(Nil).filterNot(_.stage.exists(_ != stage))
 
-    val environmentVariablesTemplate = environmentVariables map { case EnvironmentVariable(name, value, _) =>
-      s"env $name=$value"
-    }
+    val environmentVariablesTemplate = (environmentVariables map { case EnvironmentVariable(name, value, _) =>
+      s"env $name=$value\n"
+    }).mkString
 
     val appOptions = application.appOptions.getOrElse(Nil).mkString(" ")
     val jvmOptions = (garbageCollectionJvmProperties ++ application.jvmProperties.getOrElse(Nil)).mkString(" ")
@@ -42,14 +42,14 @@ object Generator {
       |chdir /$appName
       |
       |script
-      |  # Incremental mode if we are on 1 or 2 CPUs http://www.oracle.com/technetwork/java/javase/gc-tuning-6-140523.html#icms
-      |  INCREMENTAL_MODE=""
-      |
       |  IF_64_BIT_OPTION=""
       |  if $$(java -version 2>&1 | grep -q 64-Bit);
       |  then
       |  	IF_64_BIT_OPTIONS="-XX:+UseCompressedOops"
       |  fi
+      |
+      |  # Incremental mode if we are on 1 or 2 CPUs http://www.oracle.com/technetwork/java/javase/gc-tuning-6-140523.html#icms
+      |  INCREMENTAL_MODE=""
       |
       |  if [ $$(nproc) -lt 3 ]
       |  then
