@@ -45,7 +45,7 @@ object Generator {
       |  IF_64_BIT_OPTION=""
       |  if $$(java -version 2>&1 | grep -q 64-Bit);
       |  then
-      |  	IF_64_BIT_OPTIONS="-XX:+UseCompressedOops"
+      |  	IF_64_BIT_OPTIONS="-XX:+UseCompressedOops -XX:+UseConcMarkSweepGC"
       |  fi
       |
       |  # Incremental mode if we are on 1 or 2 CPUs http://www.oracle.com/technetwork/java/javase/gc-tuning-6-140523.html#icms
