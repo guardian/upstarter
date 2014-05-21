@@ -58,11 +58,11 @@ object Generator {
       |
       |  TOTAL_MEMORY=$$(grep MemTotal /proc/meminfo | awk '{ print $$2 }')
       |
-      |  HEAP_SIZE_IN_MB=$$(perl -e "print int($$TOTAL_MEMORY * $memoryAllocation / 1024 / 1024)")
+      |  HEAP_SIZE_IN_MB=$$(perl -e "print int($$TOTAL_MEMORY * $memoryAllocation / 1024)")
       |
       |  HEAP_SIZE_CMD="-Xmx$${HEAP_SIZE_IN_MB}m"
       |
-      |  COMMAND="java $$HEAP_SIZE_CMD $$IF_64_BIT_OPTIONS $$INCREMENTAL_MODE $jvmOptions -jar /$$JAR $appOptions"
+      |  COMMAND="java $$HEAP_SIZE_CMD $$IF_64_BIT_OPTIONS $$INCREMENTAL_MODE $jvmOptions -jar $$JAR $appOptions"
       |  echo "$$COMMAND" >/$appName/cmd.txt
       |  $$COMMAND >$$LOGFILE 2>&1
       |end script
